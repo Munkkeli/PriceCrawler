@@ -16,6 +16,11 @@ const settings = {
     parsePrice: (node) => node.$('.price-tag-content__price-tag-price--current > .price-tag-price__euros').attr('content'),
     parseName: (node) => node.$('.product__name-title').text(),
   },
+  jimms: {
+    baseUrl: 'https://www.jimms.fi/fi/Product/Show/',
+    parsePrice: (node) => node.$('.price .pricetext > span').text().replace(',', '.'),
+    parseName: (node) => node.$('.nameinfo h1.name').text(),
+  },
 };
 
 const productsToWatch = Object.keys(watchlist).reduce((l, x) => {
