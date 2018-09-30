@@ -32,6 +32,9 @@ PriceCrawler will create a `db.json` with product prices, and notify the user if
 5. The bot crawls the price data every time `node index.js` or `npm start` is run. You should make one of these commands execute every 1h or so. Below is an example on how to do this with `crontab`.
 
   ```
+  *Get node location*
+  whereis node
+  
   crontab -e
 
   Choose 1-4 [2]: *Enter*
@@ -39,7 +42,10 @@ PriceCrawler will create a `db.json` with product prices, and notify the user if
   *Scroll to bottom*
 
   *Add line, this will run index.js with node every hour*
-  0 * * * * node [FULL PATH TO CURRENT FOLDER]/index.js
+  0 * * * * cd [FULL PATH TO CURRENT FOLDER] && [NODE LOCATION] index.js >/dev/null 2>&1
+  
+  *Example*
+  0 * * * * cd /root/PriceCrawler && /usr/bin/node index.js >/dev/null 2>&1
 
   CTRL+X
   y
