@@ -45,8 +45,11 @@ const finishedCrawling = () => {
       const product = lastHistory[productId];
       const timeDifference = Math.abs(new Date().getTime() - product.time) / (1000 * 3600 * 24);
 
+      product.id = productId.split('-').slice(1).join('-');
+      product.type = productId.split('-')[0];
+
       if (!product.value && timeDifference >= 1 && !product.notified) {
-        const message = `Unable to get price for product [${productId}]`;
+        const message = `Unable to get price for (${product.type}) product [${product.id}]`;
         bot.sendMessage(process.env.TELEGRAM_CHAT_ID, message);
 
         history[productId].notified = true;
@@ -55,8 +58,16 @@ const finishedCrawling = () => {
       }
 
       if (product.value && history[productId].value && product.value !== history[productId].value) {
-        const message = `Price has changed for product [${productId}] (${product.name}), ${product.value.toFixed(2)} -> ${history[productId].value.toFixed(2)}`;
-        bot.sendMessage(process.env.TELEGRAM_CHAT_ID, message);
+        const url = `${settings[product.type].baseUrl}${product.id}`;
+        const message = [
+          `Price has ${product.value > history[productId].value ? 'increased' : 'dropped'} for product:`,
+          `[${product.name}](${url})`,
+          '',
+          `${product.value.toFixed(2)}€ → *${history[productId].value.toFixed(2)}€*`,
+          `(${(product.value - history[productId].value).toFixed(2)}€)`,
+        ];
+
+        bot.sendMessage(process.env.TELEGRAM_CHAT_ID, message.join('\n'), { parse_mode: 'markdown' });
 
         console.log(message);
         continue;
