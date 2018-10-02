@@ -60,11 +60,11 @@ const finishedCrawling = () => {
       if (product.value && history[productId].value && product.value !== history[productId].value) {
         const url = `${settings[product.type].baseUrl}${product.id}`;
         const message = [
-          `Price has ${product.value > history[productId].value ? 'increased' : 'dropped'} for product:`,
+          `Price has ${product.value < history[productId].value ? 'increased' : 'dropped'} for product:`,
           `[${product.name}](${url})`,
           '',
           `${product.value.toFixed(2)}€ → *${history[productId].value.toFixed(2)}€*`,
-          `(${(product.value - history[productId].value).toFixed(2)}€)`,
+          `(${(history[productId].value - product.value).toFixed(2)}€)`,
         ];
 
         bot.sendMessage(process.env.TELEGRAM_CHAT_ID, message.join('\n'), { parse_mode: 'markdown' });
