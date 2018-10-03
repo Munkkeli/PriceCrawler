@@ -57,7 +57,7 @@ const finishedCrawling = () => {
         continue;
       }
 
-      if (product.value && history[productId].value && product.value !== history[productId].value) {
+      if (product.value && history[productId] && history[productId].value && product.value !== history[productId].value) {
         const url = `${settings[product.type].baseUrl}${product.id}`;
         const message = [
           `Price has ${product.value > history[productId].value ? 'increased' : 'dropped'} for product:`,
