@@ -12,14 +12,19 @@ const bot = new TelegramBot(process.env.TELEGRAM_BOT_KEY, { polling: false });
 
 const settings = {
   verkkokauppa: {
-    baseUrl: 'https://www.verkkokauppa.com/fi/product/',
+    baseUrl: (id) => `https://www.verkkokauppa.com/fi/product/${id}`,
     parsePrice: (node) => node.$('.price-tag-content__price-tag-price--current > .price-tag-price__euros').attr('content'),
     parseName: (node) => node.$('.product__name-title').text(),
   },
   jimms: {
-    baseUrl: 'https://www.jimms.fi/fi/Product/Show/',
+    baseUrl: () => `https://www.jimms.fi/fi/Product/Show/${id}`,
     parsePrice: (node) => node.$('.price .pricetext > span').text().replace(',', '.'),
     parseName: (node) => node.$('.nameinfo h1.name').text(),
+  },
+  gigantti: {
+    baseUrl: (id) => `https://www.gigantti.fi/search?SearchTerm=${id}&RedirectToFirstSearchResult=true`,
+    parsePrice: (node) => node.$('.product-price-container').text(),
+    parseName: (node) => node.$('.product-title').text(),
   },
 };
 
@@ -58,7 +63,7 @@ const finishedCrawling = () => {
       }
 
       if (product.value && history[productId] && history[productId].value && product.value !== history[productId].value) {
-        const url = `${settings[product.type].baseUrl}${product.id}`;
+        const url = settings[product.type].baseUrl(product.id);
         const message = [
           `Price has ${product.value < history[productId].value ? 'increased' : 'dropped'} for product:`,
           `[${product.name}](${url})`,
@@ -86,7 +91,7 @@ for (let product of productsToWatch) {
   if (!setting) throw "Unknown product type";
 
   crawler.queue([{
-    uri: `${setting.baseUrl}${product.id}`,
+    uri: setting.baseUrl(product.id),
     jQuery: true,
   
     callback: (error, res, done) => {
