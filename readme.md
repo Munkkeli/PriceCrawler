@@ -1,5 +1,9 @@
 # PriceCrawler
 
+<p style="text-align: center;">
+  <img src="https://i.imgur.com/RD6Kny8.png" height="300">
+</p>
+
 ## How it works?
 
 PriceCrawler will create a `db.json` with product prices, and notify the user if the price changed. User will also be notified if PriceCrawler is not able to get new price data for over a day.
