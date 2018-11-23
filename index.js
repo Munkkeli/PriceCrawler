@@ -17,7 +17,7 @@ const settings = {
     parseName: (node) => node.$('.product__name-title').text(),
   },
   jimms: {
-    baseUrl: () => `https://www.jimms.fi/fi/Product/Show/${id}`,
+    baseUrl: (id) => `https://www.jimms.fi/fi/Product/Show/${id}`,
     parsePrice: (node) => node.$('.price .pricetext > span').text().replace(',', '.'),
     parseName: (node) => node.$('.nameinfo h1.name').text(),
   },
