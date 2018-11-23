@@ -1,6 +1,6 @@
-# PriceCrawler
+<h1 align="center">PriceCrawler</h1>
 
-<p style="text-align: center;">
+<p align="center">
   <img src="https://i.imgur.com/RD6Kny8.png" height="300">
 </p>
 
